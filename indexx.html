@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>پنل مدیریت ادمین‌ها</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; padding: 20px;
+      display: grid; place-items: center;
+      font-family: Tahoma, Arial, sans-serif;
+      background: linear-gradient(135deg, #101827, #20365a);
+      color: #172033;
+    }
+    .panel {
+      width: 100%; max-width: 420px; padding: 28px;
+      background: white; border-radius: 22px;
+      box-shadow: 0 20px 60px #0004;
+    }
+    .logo {
+      margin: auto auto 16px; width: 58px; height: 58px;
+      display: grid; place-items: center;
+      border-radius: 18px; background: #2563eb;
+      color: white; font-size: 27px;
+    }
+    h1 { text-align: center; font-size: 23px; }
+    .description {
+      text-align: center; color: #64748b;
+      font-size: 13px; line-height: 1.9;
+    }
+    .roles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .role {
+      padding: 14px 8px; border: 1px solid #dbe3ee;
+      border-radius: 12px; background: #f8fafc;
+      cursor: pointer; font-family: inherit; color: #334155;
+    }
+    .role strong, .role span { display: block; }
+    .role span { font-size: 11px; margin-top: 6px; color: #64748b; }
+    .role.active { border: 2px solid #2563eb; background: #eff6ff; }
+    label { display: block; margin: 17px 0 7px; font-size: 13px; }
+    input {
+      width: 100%; padding: 13px; border: 1px solid #cbd5e1;
+      border-radius: 10px; font: inherit;
+    }
+    .submit {
+      width: 100%; margin-top: 22px; padding: 14px;
+      border: 0; border-radius: 10px; background: #2563eb;
+      color: white; font: inherit; font-weight: bold; cursor: pointer;
+    }
+    #message {
+      display: none; margin-top: 15px; padding: 12px;
+      background: #fff7ed; color: #9a3412;
+      border-radius: 10px; font-size: 12px; line-height: 1.9;
+    }
+    .note { margin-top: 18px; font-size: 11px; line-height: 1.9; color: #64748b; }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <div class="logo">⌂</div>
+    <h1>پنل مدیریت ادمین‌ها</h1>
+    <p class="description">برای ادامه، نوع حساب خود را انتخاب کنید.</p>
+
+    <div class="roles">
+      <button type="button" class="role active" data-role="owner">
+        <strong>مالک سایت</strong>
+        <span>مدیریت کامل</span>
+      </button>
+      <button type="button" class="role" data-role="admin">
+        <strong>ادمین / کاربر</strong>
+        <span>پنل فعالیت‌ها</span>
+      </button>
+    </div>
+
+    <form id="loginForm">
+      <label for="username">نام کاربری یا ایمیل</label>
+      <input id="username" autocomplete="username"
+             placeholder="نام کاربری خود را وارد کنید" required>
+
+      <label for="password">رمز عبور</label>
+      <input id="password" type="password"
+             autocomplete="current-password"
+             placeholder="رمز عبور خود را وارد کنید" required>
+
+      <button class="submit" type="submit">ورود به حساب</button>
+      <div id="message" role="status"></div>
+    </form>
+
+    <p class="note">
+      این نسخه نمایشی است. ورود واقعی، ساخت حساب و ذخیرهٔ اطلاعات
+      باید با سیستم احراز هویت و پایگاه داده پیاده‌سازی شود.
+    </p>
+  </main>
+
+  <script>
+    let selectedRole = "owner";
+    const buttons = document.querySelectorAll(".role");
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        selectedRole = button.dataset.role;
+        buttons.forEach(item => item.classList.toggle("active", item === button));
+      });
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const roleName = selectedRole === "owner" ? "مالک سایت" : "ادمین / کاربر";
+      const message = document.getElementById("message");
+      message.textContent = "صفحه آماده است، اما ورود واقعی هنوز فعال نشده است. نقش انتخاب‌شده: " + roleName;
+      message.style.display = "block";
+    });
+  </script>
+</body>
+</html>
